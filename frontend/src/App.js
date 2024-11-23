@@ -12,17 +12,16 @@ function App() {
       .then((res) => {
         console.log("Response headers", res.headers)
         console.log("Response status:", res.status);
-        //console.log(res.json())
-        return res.text()})
+        return(res.json())})
+        //return res.text()})
       .then((data) => {
         console.log("data is"+data)
         console.log(data.message)
         setMessage(data.message)
         console.log(message)
-
-
-      });
-  }, []);
+      })
+      .catch((err) => console.error(err));
+    }, []);
 
     return (
       <div className="App">
@@ -32,6 +31,10 @@ function App() {
 
   );
 }
+
+export default App;
+
+
 /*
     <div className="App">
       <header className="App-header">
@@ -49,4 +52,3 @@ function App() {
         </a>
       </header>
     </div> */
-export default App;
