@@ -10,7 +10,7 @@ export default function Signup() {
     var usernameRef=useRef('')
     const configuration = {
       method: "post",
-      url: "https://localhost:3001/register",
+      url: "https://comp-3123-assignment2.vercel.app/register",
       data: {
         usernameRef,
         emailRef,

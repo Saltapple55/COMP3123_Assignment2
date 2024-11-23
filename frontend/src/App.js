@@ -8,10 +8,22 @@ function App() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/message")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message));
+    fetch("https://comp-3123-assignment2.vercel.app/message")
+      .then((res) => {
+        console.log("Response headers", res.headers)
+        console.log("Response status:", res.status);
+        //console.log(res.json())
+        return res.text()})
+      .then((data) => {
+        console.log("data is"+data)
+        console.log(data.message)
+        setMessage(data.message)
+        console.log(message)
+
+
+      });
   }, []);
+
     return (
       <div className="App">
       <h1>{message}</h1>
