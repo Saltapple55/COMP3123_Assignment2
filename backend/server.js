@@ -24,7 +24,7 @@ const employeeController = require('./routes/employee');
 
 
 const app = express();
-const SERVER_PORT = process.env.port || 3000;
+const SERVER_PORT = process.env.port || 3001;
 
 app.use(cors());
 app.use(express.json());
