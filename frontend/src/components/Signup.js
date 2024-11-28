@@ -10,29 +10,37 @@ export default function Signup() {
     var usernameRef=useRef('')
     const configuration = {
       method: "post",
-      url: "https://comp-3123-assignment2.vercel.app/register",
-      data: {
-        usernameRef,
-        emailRef,
-        passwordRef
-      },
-    };
+      url: "https://comp-3123-assignment1-taupe.vercel.app/api/v1/user/signup",
+       data: {
+         username:usernameRef,
+         email:emailRef,
+         password:passwordRef
+       },
+    }
 
     const handleSubmit =(e)=>{
         //always write this line
         e.preventDefault()
+        configuration.data.username=usernameRef.current.value
+        configuration.data.email=emailRef.current.value
+        configuration.data.password=passwordRef.current.value
 
-        const data={
+
+        const datainref={
             username: usernameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value
         }
-        console.log(data);
+        console.log(datainref);
+        console.log(configuration.data);
+
+        axios(configuration)
+        console.log("signed up")
         //value ref=... for references we've created
     }
 
   return (
-    <Form>
+    <Form className='Form-box'>
     {/* email */}
     <Form.Group controlId="formBasicEmail">
       <Form.Label>Email address</Form.Label>

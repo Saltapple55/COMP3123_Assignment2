@@ -1,76 +1,119 @@
  //type rfc, then tab. For class, rcc
-import React, { Component } from 'react'
+import React, { useState, Text} from 'react'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import axios from "axios";
+import {useNavigate} from 'react-router-dom'
 
 
-export default class Login extends Component {
 
-    constructor(props){
-        //...this.state - sometimes done this way
-       super(props)
-    this.state={
-        //best practice, keep keys here
-        firstname:'', 
-        lastname:'',
-        email:''
-    }
-        
-    }
+export default function Login(){
+    const navigate = useNavigate()
+    const [username, setUsername] = useState("");
 
-    handleClick(e){
-        //have to point to control
-        //e is the event
-        e.preventDefault()
+    const [password, setPassword] = useState("");
 
-        alert(`Hello World: ${e.target.name} - ${e.target.value}`)
+    const configuration = {
+        method: "post",
+        url: "https://comp-3123-assignment1-taupe.vercel.app/api/v1/user/login",
+         data: {
+           username,
+           password
+         },
+      }
+  
+      const handleSubmit =(e)=>{
+          //always write this line
+          e.preventDefault()
+  
+  
+          const datainref={
+              username,
+              password
+          }
+          console.log(datainref);
+          console.log(configuration.data);
+  
+          axios(configuration)
+          .then((response)=>{
+            
+            const data = response.data
+            console.log("logged in")
+            console.log(data)
+            localStorage.setItem('token', response.data.token);
+            navigate('/employees')
+            
 
-    }
-    handleSubmit = (e)=>{
-        //always write this line
-        e.preventDefault()
-        console.log(this.state);
-    }
-    handleInput=(e)=>{
-        e.preventDefault()
+          })
+          .catch((error) =>{
+            if(error.response)
+            alert(error.response.data.message)
+            
+            console.error(error)});
+        //value ref=... for references we've created
+      }
+  
+    
 
-        const {name, value}= e.target
-        this.setState({
-            ...this.state, //holder, operating new value - always put this line
-            [name]: value
-        })
-        console.log(`${this.state}`)
 
-       // this.fname=value
-
-    }
-  render() {
+  
     return (
         //write onclick
         //every item has name and id-name is for server
         //this prints the value that first name recieved
-        <Form>
-        {/* email */}
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" />
-        </Form.Group>
 
+        <Form className='Form-box'>
+        {/* email */}
+        <h1>Login</h1>
+        {/* <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+           type="email" 
+           email="email" 
+
+           placeholder="Enter email"
+           value={email}
+           onChange={(e) => setEmail(e.target.value)}  
+                    />
+        </Form.Group> */}
+            {/* email */}
+            <Form.Group controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control 
+          type="text" 
+          name="username" 
+          placeholder="Enter username" 
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
+    
         {/* password */}
         <Form.Group controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
-        </Form.Group>
+          <Form.Control 
+          type="password"
+          name="password"
+          placeholder="Enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
 
+           />
+        </Form.Group>
+    
         {/* submit button */}
-        <Button variant="primary" type="submit">
-          Submit
+        <Button 
+        variant="primary" 
+        type="submit"
+        onClick={(e) => handleSubmit(e)}
+        >
+          Login
         </Button>
       </Form>
       
     )
   }
-}
+
 /*<div>
         <h2>Login</h2>
         <form onSubmit={this.handleSubmit}>

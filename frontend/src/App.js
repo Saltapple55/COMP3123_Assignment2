@@ -1,32 +1,45 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from "react";
+import { Routes, Route, BrowserRouter, NavLink, Link } from 'react-router-dom';
+
 import Login from './components/login';
 import Signup from './components/Signup';
+import EmployeeHome from './components/EmployeeHome';
+import EmployeeView from './components/EmployeeView';
+import EmployeeEdit from './components/EmployeeEdit';
+import EmployeeCreate from './components/EmployeeCreate';
+import NavigationBar from './components/Navbar'
+import PrivateRoute from './components/PrivateRoute';
+
+
 
 function App() {
   const [message, setMessage] = useState("");
+//      <Login/> <Signup/>
 
-  useEffect(() => {
-    fetch("https://comp-3123-assignment2.vercel.app/message")
-      .then((res) => {
-        console.log("Response headers", res.headers)
-        console.log("Response status:", res.status);
-        return(res.json())})
-        //return res.text()})
-      .then((data) => {
-        console.log("data is"+data)
-        console.log(data.message)
-        setMessage(data.message)
-        console.log(message)
-      })
-      .catch((err) => console.error(err));
-    }, []);
 
     return (
       <div className="App">
-      <h1>{message}</h1>
-      <Signup/>
+
+      <BrowserRouter>
+      <NavigationBar/>
+
+      <Routes>
+
+        <Route path='/login' element= { <Login/> }/>
+        <Route path='/signup' element= { <Signup/> }/>
+        <Route path='/details/:userid' element= { <PrivateRoute Component={EmployeeView}/> }/>
+        <Route path='/edit/:userid' element= { <PrivateRoute Component={EmployeeEdit}/> }/>
+        <Route path='/create' element= { <PrivateRoute Component={EmployeeCreate}/> }/>
+
+        <Route path='/employees' element= {<PrivateRoute Component={EmployeeHome}/> }/>
+        {/* <Route path='/contact/:name' element= { <Contact/> }/>
+        <Route path='/userlist' element= { <UserList /> } />
+        <Route path='/user/:userid' element= { <UserDetails /> } /> */}
+
+      </Routes>
+      </BrowserRouter>
     </div>
 
   );
